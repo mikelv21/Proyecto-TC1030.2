@@ -34,9 +34,9 @@ class Actuador{
 		Actuador(string _id, string _localizacion, bool _esta_Encendido):
 			id(_id), localizacion(_localizacion), esta_Encendido(_esta_Encendido){};	
 			
-		//Funciones	
-		void encender();
-		void apagar();
+		//METODOS ABSTRACTOS
+		virtual void encender(); 
+		virtual void apagar();
 };
 
 /*Creacion de la clase Motor, cuyos objetos serivirian por ejemplo para abrir un porton,
@@ -90,6 +90,36 @@ class Lampara: public Actuador {
 		void apagar();
 		
 };
+
+void Actuador::encender(){
+	
+	cout<<"Prendido"<<endl;
+}
+
+void Actuador::apagar(){
+	
+	cout<<"Apagado"<<endl;
+}
+
+void Motor::encender(Limite &lim){
+	
+	if(lim.get_estado() == "cerrado"){
+		cout<< "Prendido en sentido"<<direccionGiro<<endl;
+		lim.set_estado("abierto");
+		direccionGiro = "Sentido Horario";
+	}
+		
+}
+
+void Motor::apagar(Limite &lim){
+	
+	if(lim.get_estado() == "abierto"){
+		cout<< "Prencido en sentido"<<direccionGiro<<endl;
+		lim.set_estado("abierto");
+		direccionGiro = "Sentido antihorario";
+	}	
+	
+}
 
 void Lampara::encender(){
 	

@@ -45,6 +45,7 @@ class Casa{
 	Casa();
 	
 	//Funciones
+	
 	void agregarCamara(Camara &cam);
 	void agregarLimite(Limite &lim);
 	void agregarMovimiento(Movimiento &mov);
