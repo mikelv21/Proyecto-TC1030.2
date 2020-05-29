@@ -6,7 +6,7 @@ Descripcion:     El objetivo es sistematizar el funcionamiento de una Casa con a
 				 
 Autor:           José Miguel Luna Vega A01706424
 
-nota personal: \Users\lunav\OneDrive\Escritorio\Tec\2do Semestre\C++\Clase OO\proyecto
+nota personal:  cd \Users\lunav\OneDrive\Escritorio\Tec\2do Semestre\C++\Clase OO\proyecto
 */
 
 #include<iostream>
@@ -33,14 +33,17 @@ int main(){
 	actuadoresCasa[0] = new Lampara("1","Sala",false,0.0,false);
 	actuadoresCasa[1] = new Motor("1","Cochera",false,"sentido Horario");
 	
-	cout<< "Estatus de los sensores: "<<endl;
-	
 	// SE USAN CICLOS PARA CON UNA MISMA INDICACION, OBTENER DIFERENTES RESULTADOS DEPENDIENDO DEL OBJETO
+
+	cout<< "Estatus de los sensores: "<<endl;
+
 	for(int i = 0; i<4; i++){
 		
 		sensoresCasa[i]->enviar_Datos();
 		
 	}
+	
+	cout<< "Estatus de los actuadores: "<<endl;
 	
 	for(int i = 0; i<2; i++){
 		
