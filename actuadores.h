@@ -35,8 +35,8 @@ class Actuador{
 			id(_id), localizacion(_localizacion), esta_Encendido(_esta_Encendido){};	
 			
 		//METODOS ABSTRACTOS
-		virtual void encender(); 
-		virtual void apagar();
+		virtual void encender() = 0; 
+		virtual void apagar() = 0;
 };
 
 /*Creacion de la clase Motor, cuyos objetos serivirian por ejemplo para abrir un porton,
@@ -60,8 +60,8 @@ class Motor: public Actuador {
 			Actuador(_id, _localizacion, _esta_Encendido), direccionGiro(_dirGiro){};
 		
 		//Funciones
-		void encender(Limite &lim);
-		void apagar(Limite &lim);
+		void encender();
+		void apagar();
 };
 
 //Creacion de la clase lampara, cuyos objetos sirven para iluminar la casa (focos, reflectores, etc)
@@ -91,34 +91,15 @@ class Lampara: public Actuador {
 		
 };
 
-void Actuador::encender(){
-	
-	cout<<"Prendido"<<endl;
-}
 
-void Actuador::apagar(){
-	
-	cout<<"Apagado"<<endl;
-}
-
-void Motor::encender(Limite &lim){
-	
-	if(lim.get_estado() == "cerrado"){
-		cout<< "Prendido en sentido"<<direccionGiro<<endl;
-		lim.set_estado("abierto");
-		direccionGiro = "Sentido Horario";
-	}
+void Motor::encender(){
 		
+	cout<< "Prendido en "<<direccionGiro<<endl;		
 }
 
-void Motor::apagar(Limite &lim){
+void Motor::apagar(){
 	
-	if(lim.get_estado() == "abierto"){
-		cout<< "Prencido en sentido"<<direccionGiro<<endl;
-		lim.set_estado("abierto");
-		direccionGiro = "Sentido antihorario";
-	}	
-	
+	cout<< "Prendido en "<<direccionGiro<<endl;	
 }
 
 void Lampara::encender(){

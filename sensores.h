@@ -142,11 +142,6 @@ class Humo_Gas: public Sensor{
 
 // Aqui se definen las funciones de los sensores, las cuales se usaran con polimorfismo //
 
-void Sensor::enviar_Datos(){
-	
-	cout<<"Datos: "<<datos<<endl;
-	
-}
 
 void Camara::enviar_Datos(){
 	

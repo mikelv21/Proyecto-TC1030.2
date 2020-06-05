@@ -4,7 +4,6 @@ Descripcion: Clase casa, esta es la clase donde se agregaran los componentes pri
 Autor: José Miguel Luna Vega A01706424
 */
 
-
 #ifndef CASA_H
 #define CASA_H
 
@@ -15,102 +14,43 @@ Autor: José Miguel Luna Vega A01706424
 using namespace std; 
 const int MAX = 100;
 
+
 //Creacion de la clase casa
 class Casa{
 	
-	//Atributos	
-	private:
-		
-		int numeroCamaras;
-		Camara camaras[MAX];
-		
-		int numeroLimites;
-		Limite limites[MAX];
-		
-		int numeroMovimiento;
-		Movimiento movimientos[MAX];
-		
-		int numeroHumo_Gas;
-		Humo_Gas humo_gas[MAX];
-		
-		int numeroLamparas;
-		Lampara lamparas[MAX];
-		
-		int numeroMotores;
-		Motor motores[MAX];
-		
 	public:
 	
-	//Declaracion del contructor por default
-	Casa();
+		//Atributos	
+		Sensor *sensoresCasa[MAX];
+		int numSensores;
+			
+		Actuador *actuadoresCasa[MAX];
+		int numActuadores;	
 	
-	//Funciones
+		//Declaracion del contructor por default
+		Casa();
 	
-	void agregarCamara(Camara &cam);
-	void agregarLimite(Limite &lim);
-	void agregarMovimiento(Movimiento &mov);
-	void agregarHumo_Gas(Humo_Gas &hg);
-	void agregarLampara(Lampara &lamp);
-	void agregarMotor(Motor &motor);
-	
+		void agregarSensor(Sensor *s);
+		void agregarActuador(Actuador *a);
 };
 
 //Constructor por default
 Casa::Casa(){
 	
-	numeroCamaras = 0;
-	numeroLimites = 0;
-	numeroMovimiento = 0;
-	numeroHumo_Gas = 0;
-	numeroMotores = 0;
-	numeroLamparas = 0;
-	
-	camaras[numeroCamaras] = Camara();
-	limites[numeroLimites] =  Limite();
-	movimientos[numeroMovimiento] = Movimiento();
-	humo_gas[numeroHumo_Gas] = Humo_Gas();
-	lamparas[numeroLamparas] = Lampara();
-	motores[numeroMotores] = Motor();
+	numSensores = 0;
+	numActuadores = 0;
 	
 }
 
-//Las siguientes funcinoes sirven para ir agregando objetos 
-
-void Casa::agregarCamara(Camara &cam ){
+void Casa::agregarSensor(Sensor *s){
 	
-	camaras[numeroCamaras] = cam;
-	numeroCamaras ++;
+	sensoresCasa[numSensores] = s;
+	numSensores ++;
 }
 
-void Casa::agregarHumo_Gas(Humo_Gas &hg){
+void Casa::agregarActuador(Actuador *a){
 	
-	humo_gas[numeroHumo_Gas] = hg;
-	numeroHumo_Gas ++;
+	actuadoresCasa[numActuadores] = a;
+	numActuadores ++;
 }
-
-void Casa::agregarLampara(Lampara &lamp){
-	
-	lamparas[numeroLamparas] = lamp;
-	numeroLamparas ++;
-}
-
-void Casa::agregarLimite(Limite &lim){
-
-	limites[numeroLimites]	= lim;
-	numeroLimites++;
-}
-
-void Casa::agregarMotor(Motor &motor){
-	
-	motores[numeroMotores] 	= motor;
-	numeroMotores++;
-}
-
-void Casa::agregarMovimiento(Movimiento &mov){
-	
-	movimientos[numeroMovimiento] = mov;
-	numeroMovimiento++;
-}
-
-
 #endif //CASA_H
