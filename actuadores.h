@@ -24,16 +24,20 @@ class Actuador{
 		string id;                       
 		string localizacion;
 		bool esta_Encendido;
+		string tipo;
 		
 	public:
 		
 		//Constructor default
-		Actuador(): id("Vacio"),localizacion("vacio"),esta_Encendido(false){};    
+		Actuador(): id("Vacio"),localizacion("vacio"),esta_Encendido(false),tipo("vacio"){};    
 		
 		//Constructor parametrizado											
-		Actuador(string _id, string _localizacion, bool _esta_Encendido):
-			id(_id), localizacion(_localizacion), esta_Encendido(_esta_Encendido){};	
-			
+		Actuador(string _id, string _localizacion, bool _esta_Encendido, string tip):
+			id(_id), localizacion(_localizacion), esta_Encendido(_esta_Encendido),tipo(tip){};	
+		
+		bool get_encendido(){ return esta_Encendido; }
+		string get_tipo(){ return tipo; }
+		string get_loc(){ return localizacion; }	
 		//METODOS ABSTRACTOS
 		virtual void encender() = 0; 
 		virtual void apagar() = 0;
@@ -44,6 +48,7 @@ class Actuador{
   
 class Motor: public Actuador {
 	
+	//Atributos
 	private:
 		
 		string direccionGiro;
@@ -51,13 +56,13 @@ class Motor: public Actuador {
 	public:
 		
 		//Constructor default
-		Motor():Actuador("vacio","vacio",false),direccionGiro("vacio"){};     
+		Motor():Actuador("vacio","vacio",false,"motor"),direccionGiro("vacio"){};     
 		
 		//Constructores parametrizados
-		Motor(string _dirGiro):Actuador("vacio","vacio",false),direccionGiro(_dirGiro){};  
+		Motor(string _dirGiro):Actuador("vacio","vacio",false,"motor"),direccionGiro(_dirGiro){};  
 		
 		Motor(string _id,string _localizacion,bool _esta_Encendido,string _dirGiro):
-			Actuador(_id, _localizacion, _esta_Encendido), direccionGiro(_dirGiro){};
+			Actuador(_id, _localizacion, _esta_Encendido,"motor"), direccionGiro(_dirGiro){};
 		
 		//Funciones
 		void encender();
@@ -75,14 +80,14 @@ class Lampara: public Actuador {
 	public:
 		
 		//Constructor default
-		Lampara():Actuador("vacio","vacio",false),iluminacion(0.0),es_automatica(false){};     
+		Lampara():Actuador("vacio","vacio",false,"lampara"),iluminacion(0.0),es_automatica(false){};     
 		
 		//Constructores parametrizados
 		Lampara(float _ilum, bool _es_automatica):
-		Actuador("vacio","vacio",false),iluminacion(_ilum),es_automatica(_es_automatica){};
+		Actuador("vacio","vacio",false,"lampara"),iluminacion(_ilum),es_automatica(_es_automatica){};
 		
 		Lampara(string _id, string _localizacion, bool _esta_Encendido, float _ilum, bool _es_automatica):
-		Actuador(_id, _localizacion, _esta_Encendido),iluminacion(_ilum),es_automatica(_es_automatica){};
+		Actuador(_id, _localizacion, _esta_Encendido,"lampara"),iluminacion(_ilum),es_automatica(_es_automatica){};
 
 		//Funciones
 		void encender();
@@ -91,34 +96,38 @@ class Lampara: public Actuador {
 		
 };
 
-
+//La funcion enciende el motor indicando su localizacion y el sentido del giro
 void Motor::encender(){
 		
-	cout<< "Prendido en "<<direccionGiro<<endl;		
+	cout<< "Motor de "<<localizacion<<" prendido en "<<direccionGiro<<"\n";		
 }
 
+//La funcion apaga el motor especificando donde esta ubicado
 void Motor::apagar(){
 	
-	cout<< "Prendido en "<<direccionGiro<<endl;	
+	cout<< "Motor de "<<localizacion<<" se apago"<<"\n";	
 }
 
+//La funcion prende de manera generica una lampara con una iluminacion media
 void Lampara::encender(){
 	
 	iluminacion = 50;
-	cout<< "La lampara se ha encendido con el 50% de iluminacion"<<endl;
+	cout<< "La lampara de "<<localizacion<<" esta encendida con el 50% de iluminacion"<<endl;
 }
 
+//La funcion sirve para que el usuario indique que iluminacion quiere tener
 void Lampara::encender(float _iluminacion){
 	
 	iluminacion = _iluminacion;
-	cout<< "La lampara se ha encendido con el  "<<iluminacion << "% de iluminacion"<<endl;
+	cout<< "La lampara de "<<localizacion<<" se encendio con el "<<iluminacion << "% de iluminacion"<<endl;
 	
 }
 
+//Esta funcion apaga una lampara especificando su ubicacion
 void Lampara::apagar(){
 
 	iluminacion = 0;
-	cout<<"Lampara apagada"<<endl;
+	cout<<"Lampara de "<<localizacion<<" se ha apagado"<<endl;
 }
 
 #endif  //ACTUADORES_H

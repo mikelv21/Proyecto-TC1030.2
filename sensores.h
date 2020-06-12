@@ -23,17 +23,22 @@ class Sensor{
 	protected:
 	
 		string id;
-		string localizacion;
 		float datos;
-	
+		string tipo;
+		string localizacion;
+
 	public:	
-	
+		
 		//Constructor por default
-		Sensor():id("vacio"),localizacion("vacio"),datos(0.0){};
+		Sensor():id("vacio"),localizacion("vacio"), tipo("vacio"), datos(0.0){};
 		 
 		//Constructor parametrizado
-		Sensor(string _id, string _localizacion, float _datos):
-		id(_id), localizacion(_localizacion), datos(_datos){};
+		Sensor(string ident, string loc,string tip, float data):
+		id(ident), localizacion(loc),tipo(tip), datos(data){};
+		
+		//Getters
+		string get_loc(){ return localizacion; }
+		string get_tipo(){ return tipo; }
 		
 		//METODO ABSTRACTO
 		virtual void enviar_Datos() = 0;
@@ -46,16 +51,15 @@ class Camara: public Sensor{
 	private:
 	
 		int num_Grabaciones;
-		string grabaciones[100];
 
 	public:	
 	
 		//Constructor por default
-		Camara(): Sensor("vacio", "vacio", 0.0),num_Grabaciones(0){};
+		Camara(): Sensor("vacio", "vacio","camara", 0.0),num_Grabaciones(0){};
 		
 		//Constructor parametrizado
-		Camara(string _id, string _localizacion,float _datos):
-			Sensor(_id, _localizacion, _datos), num_Grabaciones(0){};
+		Camara(string ident, string loc, float data):
+			Sensor(ident, loc,"camara", data), num_Grabaciones(0){};
 		
 		//Funciones
 		void grabar();	
@@ -75,17 +79,17 @@ class Movimiento: public Sensor{
 	
 		//Constructor por default
 		Movimiento():
-		Sensor("vacio","vacio",0.0),sensibilidad(10),hay_movimiento(false){};
+		Sensor("vacio","vacio","movimiento",0.0),sensibilidad(10),hay_movimiento(false){};
 		
 		//Constructor parametrizado
-		Movimiento(float _sens,bool _hay_mov):
-		Sensor("vacio","vacio",0.0),sensibilidad(_sens),hay_movimiento( _hay_mov){};
+		Movimiento(float sense,bool hay_mov):
+		Sensor("vacio","vacio","movimiento",0.0),sensibilidad(sense),hay_movimiento(hay_mov){};
 		
-		Movimiento(string _id, string _localizacion,float _datos, float _sens,bool _hay_mov):
-		Sensor(_id,_localizacion,_datos),sensibilidad(_sens),hay_movimiento( _hay_mov){};
+		Movimiento(string ident, string loc,float data, float sense,bool hay_mov):
+		Sensor(ident, loc,"movimiento", data),sensibilidad( sense ),hay_movimiento( hay_mov ){};
 		
 		//Funciones
-		void set_sensibilidad(float _sens) { sensibilidad = _sens; }
+		void set_sensibilidad(float sense ) { sensibilidad = sense; }
 		void enviar_Datos();		
 };
 
@@ -100,16 +104,17 @@ class Limite: public Sensor{
 	
 	public:	
 	
-	//Constructor por default
-		Limite(): Sensor("vacio","vacio",0.0), estado("vacio"),funcion("vacio"){};
-	//Constructor parametrizado
-		Limite(string _estado, string _funcion):
-		Sensor("vacio","vacio",0.0), estado(_estado), funcion(_funcion){};
-		
-		Limite(string _id, string _localizacion,float _datos, string _estado, string _funcion):
-		Sensor(_id,_localizacion,_datos), estado(_estado),funcion(_funcion){};
+		//Constructor por default
+		Limite(): Sensor("vacio","vacio","limite",0.0), estado("vacio"),funcion("vacio"){};
 	
-	//Funciones
+		//Constructor parametrizado
+		Limite(string status, string func):
+		Sensor("vacio","vacio","limite",0.0), estado(status), funcion(func){};
+		
+		Limite(string ident, string loc, float data, string status, string func):
+		Sensor(ident, loc,"limite", data), estado(status),funcion(func){};
+	
+		//Funciones
 		void enviar_Datos();
 		string get_estado() {return estado;}
 		void set_estado(string est)   {estado = est;}
@@ -128,13 +133,13 @@ class Humo_Gas: public Sensor{
 	public:	
 	
 		//Constructor por default
-		Humo_Gas(): Sensor("vacio","vacio",0.0), sensibilidad(0.0){};
+		Humo_Gas(): Sensor("vacio","vacio","humo",0.0), sensibilidad(0.0){};
 		
 		//Constructor parametrizado
-		Humo_Gas(float _sens): Sensor("vacio","vacio",0.0), sensibilidad(_sens){};
+		Humo_Gas(float sense): Sensor("vacio","vacio","humo",0.0), sensibilidad(sense){};
 		
-		Humo_Gas(string _id,string _localizacion,float _datos, float _sens): 
-		Sensor(_id, _localizacion, _datos), sensibilidad(_sens){};
+		Humo_Gas(string ident,string loc,float data, float sense): 
+		Sensor(ident, loc,"humo", data), sensibilidad(sense){};
 		
 		//Funciones
 		void enviar_Datos();		
@@ -142,13 +147,14 @@ class Humo_Gas: public Sensor{
 
 // Aqui se definen las funciones de los sensores, las cuales se usaran con polimorfismo //
 
-
+//La camara envia la imagen de la camara de un lugar
 void Camara::enviar_Datos(){
 	
 	cout<<"Mostrando imagen de: "<< localizacion << endl;
 	
 }
 
+//La siguiente funcion especifica si hay movimiento en una ubicacion si el sensor asi lo detecta
 void Movimiento::enviar_Datos(){
 		
 	if (hay_movimiento == true){
@@ -163,6 +169,8 @@ void Movimiento::enviar_Datos(){
 	
 }
 
+//La siguiente funcion nos ayuda a revisar con un sensor de Humo y de Gas si existe alguna fuga
+//o indicios de incendio e indicarselo al usuario
 void Humo_Gas::enviar_Datos(){
 	
 	cout<<"Emision de humo/gas al: "<<datos<<" % , ";
@@ -179,15 +187,25 @@ void Humo_Gas::enviar_Datos(){
 	
 }
 
+//La funcion nos ayuda a identificar dependiendo del estado del sensor si una puerta esta abierta o 
+//cerrada
 void Limite::enviar_Datos(){
 	
 	if (estado == "abierto"){
-		cout<<"El sensor de limite "<<funcion<< "esta"<<estado<<endl;
+		cout<<"El sensor de limite de: "<<funcion<< "esta"<<estado<<endl;
     }
 	
 	else{
-		cout<<"El sensor de limite "<<funcion<<" esta: "<<estado<<endl;
+		cout<<"El sensor de limite de: "<<funcion<<" esta: "<<estado<<endl;
 	}
+}
+
+//La funcion nos ayuda a grabar la imagen de una camara, especificando su ubicacion
+void Camara::grabar(){
+	
+	cout<<"Grabando en "<<localizacion<<"...\n";
+	num_Grabaciones ++;
+	
 }
 
 #endif //SENSORES_H

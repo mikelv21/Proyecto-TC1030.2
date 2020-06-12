@@ -42,12 +42,14 @@ Casa::Casa(){
 	
 }
 
+//Esta funcion nos ayuda a agregar un componente Sensor a la casa
 void Casa::agregarSensor(Sensor *s){
 	
 	sensoresCasa[numSensores] = s;
 	numSensores ++;
 }
 
+//Esta funcion nos ayuda a agregar un componente actuador a la casa
 void Casa::agregarActuador(Actuador *a){
 	
 	actuadoresCasa[numActuadores] = a;
